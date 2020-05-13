@@ -31,15 +31,15 @@ class SignupUser extends Model
     {
         return [
             ['username', 'trim'],
-            ['username', 'required'],
+            ['username', 'required', 'message' => 'Логин не должен быть пустым'],
             ['username', 'string', 'min' => 2, 'max' => 50],
 
             ['password', 'trim'],
-            ['password', 'required'],
+            ['password', 'required', 'message' => 'Пароль не должен быть пустым'],
             ['password', 'string', 'min' => 6, 'max' => 12],
 
             ['email', 'trim'],
-            ['email', 'required'],
+            ['email', 'required', 'message' => 'Заполните поле E-mail'],
             ['email', 'email'],
             ['email', 'string', 'max' => 100],
 
@@ -72,9 +72,9 @@ class SignupUser extends Model
         try {
             //добавляем пользователя
             $user = new User();
+            $user->username = $this->username;
             $user->email = $this->email;
             $user->setPassword($this->password);
-            $user->inviter_id = $this->inviter;
             $user->save();
 
             //добавляем профиль

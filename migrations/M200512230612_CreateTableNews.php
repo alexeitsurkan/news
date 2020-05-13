@@ -14,13 +14,12 @@ class M200512230612_CreateTableNews extends Migration
 
         $this->createTable('{{%news}}', [
             'id'          => $this->primaryKey(),
-            'title'       => $this->string()->notNull()->unique()->comment('название новости'),
-            'image'       => $this->string()->comment('название новости'),
+            'title'       => $this->string()->notNull()->comment('название новости'),
             'body'        => $this->text()->notNull()->comment('текст новости'),
             'views'       => $this->integer()->defaultValue(0)->comment('количество лайков'),
             'likes'       => $this->integer()->defaultValue(0)->comment('количество просмотров'),
-            'created_at'  => $this->integer()->notNull()->comment('дата создания'),
-            'updated_at'  => $this->integer()->notNull()->comment('дата обновления'),
+            'created_at'  => $this->timestamp()->defaultValue(new \yii\db\Expression('NOW()'))->notNull()->comment('дата создания'),
+            'updated_at'  => $this->timestamp()->defaultValue(new \yii\db\Expression('NOW()'))->notNull()->comment('дата обновления'),
             'user_id'     => $this->integer()->notNull()->comment('id пользователя'),
         ], $tableOptions);
     }

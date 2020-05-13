@@ -21,7 +21,7 @@ class M200512230614_CreateTableProfile extends Migration
             'first_name'  => $this->string(50)->notNull()->comment('Имя'),
             'last_name'   => $this->string(50)->notNull()->comment('Фамилия'),
             'middle_name' => $this->string(50)->notNull()->comment('Отчество'),
-            'photo'       => $this->string()->comment('фото'),
+            'avatar'      => $this->string()->comment('фото'),
         ], $tableOptions);
 
         $this->addCommentOnTable('profile', 'Профиль пользователя');

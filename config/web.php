@@ -6,6 +6,7 @@ $db = require __DIR__ . '/db.php';
 $config = [
     'id' => 'basic',
     'basePath' => dirname(__DIR__),
+    'language' => 'ru-RU',
     'bootstrap' => ['log'],
     'aliases' => [
         '@bower' => '@vendor/bower-asset',
@@ -26,7 +27,7 @@ $config = [
             'loginUrl' => ['/user/login']
         ],
         'errorHandler' => [
-            'errorAction' => 'site/error',
+            'errorAction' => 'news/error',
         ],
         'mailer' => [
             'class' => 'yii\swiftmailer\Mailer',
@@ -50,6 +51,19 @@ $config = [
             'enablePrettyUrl' => true,
             'showScriptName' => false,
             'rules' => [
+                '/' => 'news/index',
+            ],
+        ],
+        'i18n' => [
+            'translations' => [
+                'app*' => [
+                    'class' => 'yii\i18n\PhpMessageSource',
+                    'sourceLanguage' => 'en-US',
+                    'basePath'       => '@app/lang',
+                    'fileMap' => [
+                        'lang/app' => 'app.php',
+                    ],
+                ],
             ],
         ],
     ],

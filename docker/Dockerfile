@@ -10,7 +10,9 @@ RUN apt-get update && apt-get install -y \
     cron \
     rsyslog
 
-#COPY cron /etc/cron.d/sample
+RUN apt update \
+    && apt install nodejs -y \
+    npm  -y
 
 WORKDIR /app
 
