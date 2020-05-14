@@ -4,9 +4,8 @@ use yii\db\Migration;
 
 class M200512230614_CreateTableProfile extends Migration
 {
-    /**
-     * @inheritdoc
-     */
+    public $tableName = '{{%profile}}';
+
     public function safeUp()
     {
         $tableOptions = null;
@@ -15,7 +14,7 @@ class M200512230614_CreateTableProfile extends Migration
             $tableOptions = 'CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE=InnoDB';
         }
 
-        $this->createTable('profile', [
+        $this->createTable($this->tableName, [
             'id'          => $this->primaryKey(),
             'user_id'     => $this->integer()->notNull()->comment('id пользователя'),
             'first_name'  => $this->string(50)->notNull()->comment('Имя'),
@@ -24,11 +23,11 @@ class M200512230614_CreateTableProfile extends Migration
             'avatar'      => $this->string()->comment('фото'),
         ], $tableOptions);
 
-        $this->addCommentOnTable('profile', 'Профиль пользователя');
+        $this->addCommentOnTable($this->tableName, 'Профиль пользователя');
 
         $this->addForeignKey(
             "profile_user_id_fk",
-            "profile",
+            $this->tableName,
             "user_id",
             "user",
             "id",
@@ -42,7 +41,7 @@ class M200512230614_CreateTableProfile extends Migration
      */
     public function safeDown()
     {
-        $this->dropTable('profile');
+        $this->dropTable($this->tableName);
     }
 
 }

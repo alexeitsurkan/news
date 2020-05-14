@@ -26,7 +26,7 @@ class NewsController extends Controller
         $model = new ShowNews();
         $query = $model->GetQueryNews();
         $clonQuery = clone $query;
-        $pages = new Pagination(['totalCount' => $clonQuery->count(), 'pageSize' => 20]);
+        $pages = new Pagination(['totalCount' => $clonQuery->count(), 'pageSize' => 10]);
 
         $data = $query
             ->orderBy('news.id DESC')
@@ -40,9 +40,11 @@ class NewsController extends Controller
     }
 
     //получить новость по id
-    public function actionView(Integer $id)
+    public function actionView($id)
     {
-        $data = News::findOne($id);
+        $model = new ShowNews();
+        $data = $model->ShowOneNews($id);
+
         return $this->render('view',[
             'data' => $data,
         ]);
