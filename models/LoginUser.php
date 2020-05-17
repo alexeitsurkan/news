@@ -29,7 +29,7 @@ class LoginUser extends Model
             ['username', 'string', 'max' => 255],
 
             ['password', 'required'],
-            ['password', 'string', 'min' => 6],
+            ['password', 'string', 'min' => 6, 'max' => '12'],
             ['password', 'validatePassword'],
         ];
     }

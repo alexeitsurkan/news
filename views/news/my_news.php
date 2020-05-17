@@ -1,27 +1,28 @@
 <?php
 
-use app\widgets\Alert;
+use app\assets\MyNewsBundle;
 use yii\helpers\Url;
 use yii\widgets\LinkPager;
-
 /**
  * @var $data
  * @var $pages
  */
 
+
+
+MyNewsBundle::register($this);
+$this->title = 'Мои статьи';
 $post_size = ['full', 'one-third', 'one-third', 'one-third', 'two-third', 'one-third'];
 ?>
-<?= Alert::widget() ?>
 
-<header id="gtco-header" class="gtco-cover gtco-cover-sm" role="banner" style="background-image:url(images/content/zz.jpeg);">
+<header id="gtco-header" class="gtco-cover" role="banner" style="height: 300px">
     <div class="overlay"></div>
     <div class="container">
         <div class="row">
-            <div class="col-md-9 text-left">
-                <div class="display-t">
-                    <div class="display-tc animate-box" data-animate-effect="fadeInUp">
-                        <span class="date-post">Информационное агенство</span>
-                        <h1 class="mb30"><a href="#">Новости</a></h1>
+            <div class="col-md-7 text-left">
+                <div class="display-t" style="height: 350px">
+                    <div class="display-tc animate-box" data-animate-effect="fadeInUp" style="height: 350px">
+                        <h1 class="mb30"><a href="#"><?= $this->title ?></a></h1>
                     </div>
                 </div>
             </div>
@@ -40,6 +41,10 @@ $post_size = ['full', 'one-third', 'one-third', 'one-third', 'two-third', 'one-t
                         $i = $key - $count_size*floor($key/$count_size);
                     ?>
                         <li class="<?=$post_size[$i] ?> entry animate-box" data-animate-effect="fadeIn">
+                            <div class="c_panel">
+                                <a href="<?= Url::toRoute(['news/form', 'id' => $value['id']]) ?>" class="btn btn-warning" title="Изменить"><i class="icon-pencil"></i></a>
+                                <a href="<?= Url::toRoute(['news/delete', 'id' => $value['id']]) ?>" class="btn btn-danger" title="Удалить"><i class="icon-trash"></i></a>
+                            </div>
                             <a href="<?= Url::toRoute(['news/view', 'id' => $value['id']]) ?>">
                                 <div class="entry-img" style="background-image: url(<?= (!empty($value['image']))?$value['image']:''; ?>)"></div>
                                 <div class="entry-desc">
@@ -47,14 +52,7 @@ $post_size = ['full', 'one-third', 'one-third', 'one-third', 'two-third', 'one-t
                                     <p><?=$value['description'] ?></p>
                                 </div>
                             </a>
-                            <a class="post-meta">
-                                <i class="icon-user"></i>
-                                <?=$value['user'] ?>
-                                <span class="date-posted">
-                                    <i class="icon-watch"></i>
-                                    <?=$value['date'] ?>
-                                </span>
-                            </a>
+                            <span class="post-meta"><?=$value['user'] ?><span class="date-posted"><?=$value['date'] ?></span></span>
                         </li>
                     <?php endforeach;?>
                 </ul>

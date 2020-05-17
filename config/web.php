@@ -29,12 +29,21 @@ $config = [
         'errorHandler' => [
             'errorAction' => 'news/error',
         ],
+        'authManager' => [
+            'class' => \yii\rbac\DbManager::class,
+            'cache' => 'cache' //Включаем кеширование
+        ],
         'mailer' => [
-            'class' => 'yii\swiftmailer\Mailer',
-            // send all mails to a file by default. You have to set
-            // 'useFileTransport' to false and configure a transport
-            // for the mailer to send real emails.
-            'useFileTransport' => true,
+            'class' => \yii\swiftmailer\Mailer::class,
+            'useFileTransport' => false,
+            'transport' => [
+                'class' => 'Swift_SmtpTransport',
+                'encryption' => 'tls',
+                'host' => 'smtp.gmail.com',
+                'port' => '587',
+                'username' => '', //todo a.curkan сделать
+                'password' => '', //todo a.curkan сделать
+            ],
         ],
         'log' => [
             'traceLevel' => YII_DEBUG ? 3 : 0,

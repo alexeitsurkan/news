@@ -2,7 +2,7 @@
 
 use yii\db\Migration;
 
-class M200512230610_CreateTableUser extends Migration
+class M200512230510_CreateTableUser extends Migration
 {
     public $tableName = '{{%user}}';
 
@@ -20,9 +20,19 @@ class M200512230610_CreateTableUser extends Migration
             'auth_key'   => $this->string(32)->notNull(),
             'password'   => $this->string()->notNull(),
             'email'      => $this->string()->notNull()->unique(),
-            'created_at' => $this->timestamp()->defaultValue(new \yii\db\Expression('NOW()'))->notNull(),
-            'updated_at' => $this->timestamp()->defaultValue(new \yii\db\Expression('NOW()'))->notNull(),
+            'created_at' => $this->integer()->notNull(),
+            'updated_at' => $this->integer()->notNull(),
         ], $tableOptions);
+
+        $this->insert($this->tableName,[
+            'id'         => 1,
+            'username'   => 'admin',
+            'email'      => 'email@email.com',
+            'auth_key'   => 'OsPQgcmhlo5wAlsvDPSrow-Dh5H6L2qk',
+            'password'   => '$2y$13$F/6PI29KjnOxBA6L798zwubM.d7zoXM4ryjyGTFo7h.c6f85KMHcq',
+            'created_at' => 1581250127,
+            'updated_at' => 1581250127,
+        ]);
     }
 
     public function safeDown()

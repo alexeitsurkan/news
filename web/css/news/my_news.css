@@ -1,0 +1,14 @@
+
+.c_panel{
+    position: relative;
+    padding: 7px;
+    width: 100%;
+    text-align: right;
+    background: rgba(39, 41, 43, 0.7);
+}
+
+.c_panel .btn{
+    border-radius: 50px;
+    padding: 5px 8px;
+    margin: 0;
+}

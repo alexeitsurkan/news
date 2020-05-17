@@ -8,9 +8,9 @@ class AppAsset extends AssetBundle
     public $baseUrl = '@web';
     public $css = [
         'css/animate.css',
+        'css/icomoon.css',
         'css/bootstrap.css',
         'css/style.css',
-        'css/icomoon.css',
     ];
     public $js = [
         'js/main.js',

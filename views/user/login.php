@@ -26,7 +26,7 @@ $this->title = 'Вход';
             <div class="col-md-12">
                 <article class="mt-negative">
                     <div class="text-left content-article">
-                        <?php $form = ActiveForm::begin(['id' => 'login-form', 'enableClientValidation' => false]); ?>
+                        <?php $form = ActiveForm::begin(['id' => 'login-form', 'enableClientScript' => false]); ?>
                         <h3 class="text-center">Введите ваши данные</h3>
                         <?= $form->field($model, 'username', [
                             'options' => ['class' => 'form-group has-feedback']

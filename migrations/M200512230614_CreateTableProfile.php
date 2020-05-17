@@ -18,8 +18,8 @@ class M200512230614_CreateTableProfile extends Migration
             'id'          => $this->primaryKey(),
             'user_id'     => $this->integer()->notNull()->comment('id пользователя'),
             'first_name'  => $this->string(50)->notNull()->comment('Имя'),
-            'last_name'   => $this->string(50)->notNull()->comment('Фамилия'),
-            'middle_name' => $this->string(50)->notNull()->comment('Отчество'),
+            'last_name'   => $this->string(50)->comment('Фамилия'),
+            'middle_name' => $this->string(50)->comment('Отчество'),
             'avatar'      => $this->string()->comment('фото'),
         ], $tableOptions);
 
@@ -34,6 +34,13 @@ class M200512230614_CreateTableProfile extends Migration
             "CASCADE",
             "CASCADE"
         );
+
+        $this->insert('profile',[
+            'user_id'     => 1,
+            'first_name'  => 'Администратор',
+            'last_name'   => '',
+            'middle_name' => '',
+        ]);
     }
 
     /**

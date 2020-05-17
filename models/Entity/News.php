@@ -5,8 +5,13 @@ use yii\db\ActiveRecord;
 /**
  * Class News
  * @package app\models\Entity
- * @property string $title
- * @property string $body
+ * @property integer $image_id
+ * @property string  $title
+ * @property string  $description
+ * @property string  $body
+ * @property integer $views
+ * @property integer $likes
+ * @property integer $user_id
  */
 class News extends ActiveRecord
 {
