@@ -1,7 +1,6 @@
 <?php
 
 return [
-    'adminEmail' => 'admin@example.com',
-    'senderEmail' => 'noreply@example.com',
-    'senderName' => 'Example.com mailer',
+    'adminEmail'   => 'yougdzcom@gmail.com', //todo a.curkan добавить емаил администратора
+    'supportEmail' => 'yougdzcom@gmail.com', //todo a.curkan добавить емаил сапорта для отправки почты
 ];

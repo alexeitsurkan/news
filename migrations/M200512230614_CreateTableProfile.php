@@ -15,12 +15,13 @@ class M200512230614_CreateTableProfile extends Migration
         }
 
         $this->createTable($this->tableName, [
-            'id'          => $this->primaryKey(),
-            'user_id'     => $this->integer()->notNull()->comment('id пользователя'),
-            'first_name'  => $this->string(50)->notNull()->comment('Имя'),
-            'last_name'   => $this->string(50)->comment('Фамилия'),
-            'middle_name' => $this->string(50)->comment('Отчество'),
-            'avatar'      => $this->string()->comment('фото'),
+            'id'              => $this->primaryKey(),
+            'user_id'         => $this->integer()->notNull()->comment('id пользователя'),
+            'first_name'      => $this->string(50)->notNull()->comment('Имя'),
+            'last_name'       => $this->string(50)->comment('Фамилия'),
+            'middle_name'     => $this->string(50)->comment('Отчество'),
+            'avatar'          => $this->string()->comment('фото'),
+            'notify_settings' => $this->json()->comment('настройки уведомлений'),
         ], $tableOptions);
 
         $this->addCommentOnTable($this->tableName, 'Профиль пользователя');

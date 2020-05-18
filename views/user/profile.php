@@ -9,6 +9,8 @@ UserProfileBundle::register($this);
 
 /**
  * @var $model
+ * @var $dicNotifySender
+ * @var $dicNotifyEvent
  */
 
 
@@ -66,15 +68,34 @@ $this->title = 'Профиль пользователя';
                         <div class="col-sm-6">
                             <div class="form-group">
                                 <label for="email" class="col-sm-12 control-label">E-mail</label>
-                                <?= Html::activeTextInput($model,'email',[
-                                    'id' => 'email',
-                                    'class' => 'option-str form-control',
-                                ])?>
+                                <?= $form->field($model, 'email', [
+                                    'options' => ['class' => '']
+                                ])->label(false)->textInput(['placeholder' => 'email@email.ru']) ?>
                             </div>
                         </div>
                         <div class="col-sm-6">
                             <div class="form-group">
                                 <?= $form->field($model, 'pass', [])->label('Новый пароль')->passwordInput(['placeholder' => $model->getAttributeLabel('123456')]) ?>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label class="col-xs-12 control-label no-padding-right">Выберите способ отправки уведомлений</label>
+                                <?= Html::activeCheckboxList($model, 'notify_sender', $dicNotifySender, [
+                                    'class' => 'offset-1 text-left',
+                                    'separator' => '<br>',
+                                ]) ?>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label class="col-xs-12 control-label no-padding-right">После каких событий отправлять уведомления?</label>
+                                <?= Html::activeCheckboxList($model, 'notify_event', $dicNotifyEvent, [
+                                    'class' => 'offset-1 text-left',
+                                    'separator' => '<br>',
+                                ]) ?>
                             </div>
                         </div>
                     </div>

@@ -39,7 +39,7 @@ $this->title = 'Регистрация';
                             </div>
                             <div class="col-sm-6">
                                 <div class="form-group">
-                                    <?= $form->field($model, 'password', [])->label('Пароль') ?>
+                                    <?= $form->field($model, 'password', [])->label('Пароль')->passwordInput() ?>
                                 </div>
                             </div>
                         </div>

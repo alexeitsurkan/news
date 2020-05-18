@@ -16,7 +16,7 @@ class AuthItemChild extends ActiveRecord
     }
 
     //список всех записей
-    public static function GetList()
+    public static function all()
     {
         return self::find()->all();
     }

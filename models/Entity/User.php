@@ -8,14 +8,19 @@ use yii\web\IdentityInterface;
  * Class User
  * @package backend\modules\base\models\Auth
  * @property integer $id
- * @property integer $email
- * @property integer $auth_key
- * @property integer $password
+ * @property string  $username
+ * @property string  $email
+ * @property string  $verification_token
+ * @property string  $password
  * @property integer $created_at
  * @property integer $updated_at
  */
 class User extends ActiveRecord implements IdentityInterface
 {
+    const STATUS_DELETED = 0;
+    const STATUS_INACTIVE = 9;
+    const STATUS_ACTIVE = 10;
+
     public static function tableName()
     {
         return '{{%user}}';
@@ -49,7 +54,7 @@ class User extends ActiveRecord implements IdentityInterface
      */
     public static function findIdentity($id)
     {
-        return static::findOne(['id' => $id]);
+        return static::findOne(['id' => $id, 'status' => self::STATUS_ACTIVE]);
     }
 
     /**
@@ -69,7 +74,7 @@ class User extends ActiveRecord implements IdentityInterface
      */
     public static function findByEmail($email)
     {
-        return static::findOne(['email' => $email]);
+        return static::findOne(['email' => $email, 'status' => self::STATUS_ACTIVE]);
     }
 
     /**
@@ -79,7 +84,7 @@ class User extends ActiveRecord implements IdentityInterface
      */
     public static function findByUserName($username)
     {
-        return static::findOne(['username' => $username]);
+        return static::findOne(['username' => $username, 'status' => self::STATUS_ACTIVE]);
     }
 
     /**
@@ -128,6 +133,24 @@ class User extends ActiveRecord implements IdentityInterface
     public function setPassword($password)
     {
         $this->password = Yii::$app->security->generatePasswordHash($password);
+    }
+
+    /**
+     * Generates new token for email verification
+     */
+    public function generateEmailVerificationToken()
+    {
+        $this->verification_token = Yii::$app->security->generateRandomString() . '_' . time();
+    }
+
+    /**
+     * Finds user by verification email token
+     */
+    public static function findByVerificationToken($token) {
+        return static::findOne([
+            'verification_token' => $token,
+            'status' => self::STATUS_INACTIVE
+        ]);
     }
 }
 

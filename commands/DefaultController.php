@@ -20,8 +20,8 @@ class DefaultController extends Controller
         $rule = new CreatorRule;
         $auth->add($rule);
 
-        // добавляем право "updateNews" и связываем правило с правом
-        $updateOwnPost = $auth->createPermission('updateNews');
+        // добавляем право "manageNews" и связываем правило с правом
+        $updateOwnPost = $auth->createPermission('manageNews');
         $updateOwnPost->description = 'Обновление новостей';
         $updateOwnPost->ruleName = $rule->name;
         $auth->add($updateOwnPost);

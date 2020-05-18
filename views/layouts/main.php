@@ -1,10 +1,7 @@
 <?php
 
 use app\assets\AppAsset;
-use app\widgets\Alert;
-use app\widgets\TopMenu;
 use yii\helpers\Html;
-use yii\helpers\Url;
 
 /**
  * @var $this \yii\web\View

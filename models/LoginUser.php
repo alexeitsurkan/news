@@ -4,13 +4,12 @@ namespace app\models;
 
 use app\models\Entity\User;
 use Yii;
-use yii\base\Model;
 
 /**
- * Class LoginForm
- * @package backend\modules\base\models
+ * Class LoginUser
+ * @package app\models
  */
-class LoginUser extends Model
+class LoginUser extends UserModel
 {
     public $username;
     public $password;

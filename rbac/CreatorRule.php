@@ -6,7 +6,7 @@ use app\models\Entity\AuthAssignment;
 use yii\rbac\Rule;
 
 /**
- * правило доступа где редактировать файлы могут только авторы и admin
+ * правило доступа где редактировать статьи могут только авторы и admin
  * Class CreatorRule
  * @package app\rbac
  */
@@ -19,6 +19,6 @@ class CreatorRule extends Rule
         $role = AuthAssignment::GetUserRole($user_id);
         if($role->item_name == 'admin')return true;//доступ для админа
 
-        return isset($params['file']) ? $params['file']->user_create_id == $user_id : false;
+        return isset($params['news']) ? $params['news']->user_id == $user_id : false;
     }
 }

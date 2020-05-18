@@ -15,23 +15,26 @@ class M200512230510_CreateTableUser extends Migration
         }
 
         $this->createTable($this->tableName, [
-            'id'         => $this->primaryKey(),
-            'username'   => $this->string()->notNull()->unique(),
-            'auth_key'   => $this->string(32)->notNull(),
-            'password'   => $this->string()->notNull(),
-            'email'      => $this->string()->notNull()->unique(),
+            'id' => $this->primaryKey(),
+            'username' => $this->string()->notNull()->unique(),
+            'auth_key' => $this->string(32)->notNull(),
+            'password' => $this->string()->notNull(),
+            'email' => $this->string()->notNull()->unique(),
             'created_at' => $this->integer()->notNull(),
             'updated_at' => $this->integer()->notNull(),
+            'verification_token' => $this->string()->defaultValue(null),
+            'status' => $this->smallInteger()->notNull()->defaultValue(9),
         ], $tableOptions);
 
-        $this->insert($this->tableName,[
-            'id'         => 1,
-            'username'   => 'admin',
-            'email'      => 'email@email.com',
-            'auth_key'   => 'OsPQgcmhlo5wAlsvDPSrow-Dh5H6L2qk',
-            'password'   => '$2y$13$F/6PI29KjnOxBA6L798zwubM.d7zoXM4ryjyGTFo7h.c6f85KMHcq',
+        $this->insert($this->tableName, [
+            'id' => 1,
+            'username' => 'admin',
+            'email' => 'email@email.com',
+            'auth_key' => 'OsPQgcmhlo5wAlsvDPSrow-Dh5H6L2qk',
+            'password' => '$2y$13$F/6PI29KjnOxBA6L798zwubM.d7zoXM4ryjyGTFo7h.c6f85KMHcq',
             'created_at' => 1581250127,
             'updated_at' => 1581250127,
+            'status' => 10,
         ]);
     }
 

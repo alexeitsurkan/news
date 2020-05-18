@@ -1,10 +1,12 @@
 <?php
 
+use app\widgets\Alert;
+use yii\helpers\Url;
 use yii\widgets\ActiveForm;
 
 $this->title = 'Вход';
 ?>
-
+<?= Alert::widget() ?>
 <header id="gtco-header" class="gtco-cover" role="banner" style="height: 300px">
     <div class="overlay"></div>
     <div class="container">
@@ -38,7 +40,7 @@ $this->title = 'Вход';
 
                         <div class="row form-group">
                             <div class="col-xs-8">
-                                <button type="button" class="btn btn-link" id="recovery-btn">Востановить пароль</button>
+                                <a href="<?=Url::toRoute(['user/recovery'])?>" id="recovery-btn">Восстановить пароль</a>
                             </div>
                             <div class="col-xs-4">
                                 <button type="submit" class="btn btn-success btn-block btn-flat">Вход</button>

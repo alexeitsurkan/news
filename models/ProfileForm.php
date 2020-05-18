@@ -19,6 +19,8 @@ class ProfileForm extends Model
     public $avatar;
     public $email;
     public $pass;
+    public $notify_sender = [];
+    public $notify_event   = [];
 
     /**
      * {@inheritdoc}
@@ -52,6 +54,7 @@ class ProfileForm extends Model
             ['pass', 'string', 'min' => 6, 'max' => 12],
 
             ['avatar', 'file', 'maxFiles' => 1, 'maxSize' => $max_file_size],
+            [['notify_sender','notify_event'], 'each', 'rule' => ['integer']],
 
         ];
     }
@@ -59,21 +62,17 @@ class ProfileForm extends Model
     public function update()
     {
         $id = Yii::$app->user->getId();
-        $profile = Profile::GetProfile($id);
+        $profile = Profile::get($id);
         $profile->last_name = $this->last_name;
         $profile->first_name = $this->first_name;
         $profile->middle_name = $this->middle_name;
+        $profile->notify_settings = $this->GetNotifySettings();
         $profile->update();
 
-        if($this->email){
+        if($this->email || $this->pass){
             $user = User::findIdentity($id);
-            $user->email = $this->email;
-            $user->save();
-        }
-
-        if($this->pass){
-            $user = User::findIdentity($id);
-            $user->setPassword($this->pass);
+            if(!empty($this->email))$user->email = $this->email;
+            if(!empty($this->pass))$user->setPassword($this->pass);
             $user->save();
         }
 
@@ -84,7 +83,7 @@ class ProfileForm extends Model
                 $name = '/images/avatars/' . uniqid() . '.' . $file->extension;
                 $file_name = $puth . $name;
                 $file->saveAs($file_name);
-                $this->ImageResize($file_name, 250, 100);
+                FileHelpers::ImageResize($file_name, 250, 100);
                 $profile->avatar = $name;
                 $profile->update();
             }
@@ -93,38 +92,12 @@ class ProfileForm extends Model
         return true;
     }
 
-    /**
-     * изменяет размер фото
-     * @param $file_name - абсолютное имя файла
-     * @param $new_w - ширина изображения
-     * @param $quality - качество
-     */
-    private function ImageResize($file_name, $new_w, $quality)
+    public function GetNotifySettings()
     {
-        try {
-            $old_avatar = imagecreatefrompng($file_name);
-        } catch (\Exception $e) {
-            $old_avatar = imagecreatefromjpeg($file_name);
-        }
-        $old_w = imagesx($old_avatar);
-        $old_h = imagesy($old_avatar);
-        $min_l = ($old_w > $old_h) ? $old_h : $old_w;
-        $k = $new_w / $min_l;
-
-        $w = intval($old_w * $k);
-        $h = intval($old_h * $k);
-
-        $new_p1 = imagecreatetruecolor($w, $h);
-        imagecopyresampled($new_p1, $old_avatar, 0, 0, 0, 0, $w, $h, $old_w, $old_h);
-
-        $im2 = imagecrop($new_p1, ['x' => 0, 'y' => 0, 'width' => $new_w, 'height' => $new_w]);
-        try {
-            imagejpeg($im2, $file_name, $quality);//создаем новый
-        } catch (\Exception $e) {
-            imagepng($im2, $file_name, $quality);//создаем новый
-        }
-        imagedestroy($old_avatar);
-        imagedestroy($new_p1);
-        imagedestroy($im2);
+        $data = [
+            'notify_sender' => $this->notify_sender,
+            'notify_event'   => $this->notify_event,
+        ];
+        return json_encode($data);
     }
 }

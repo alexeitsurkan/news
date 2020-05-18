@@ -1,13 +1,16 @@
 <?php namespace app\controllers;
 
-use app\models\ControlNews;
+use app\models\NewsControl;
 use app\models\Entity\News;
 use app\models\ShowNews;
 use Yii;
 use yii\data\Pagination;
+use yii\db\Exception;
 use yii\filters\AccessControl;
 use yii\helpers\Url;
 use yii\web\Controller;
+use yii\web\ForbiddenHttpException;
+use yii\web\NotFoundHttpException;
 use yii\web\UploadedFile;
 
 class NewsController extends Controller
@@ -106,16 +109,20 @@ class NewsController extends Controller
     {
         $action = 'add';
         $this->view->title = 'Добавление статьи';
-        $model = new ControlNews();
+        $model = new NewsControl();
         if (!empty($id)) {
             $action = 'update';
             $this->view->title = 'Обновление статьи';
-            $data = News::findOne($id);
-            if (!empty($data)) {
-                $model->id = $id;
-                $model->title = $data->title;
-                $model->description = $data->description;
-                $model->body = $data->body;
+            $news = News::findOne($id);
+            if (!empty($news)) {
+                if (\Yii::$app->user->can('manageNews', ['news' => $news])) {
+                    $model->id = $id;
+                    $model->title = $news->title;
+                    $model->description = $news->description;
+                    $model->body = $news->body;
+                }else{
+                    throw new ForbiddenHttpException;
+                }
             }
         }
         return $this->render('form_news', [
@@ -128,7 +135,7 @@ class NewsController extends Controller
     public function actionAdd()
     {
         $post = Yii::$app->request->post();
-        $model = new ControlNews(['scenario' => ControlNews::CREATE]);
+        $model = new NewsControl(['scenario' => NewsControl::CREATE]);
         $model->load($post);
         $model->files = UploadedFile::getInstances($model, 'files');
         if ($model->create()) {
@@ -143,7 +150,7 @@ class NewsController extends Controller
     public function actionUpdate()
     {
         $post = Yii::$app->request->post();
-        $model = new ControlNews(['scenario' => ControlNews::UPDATE]);
+        $model = new NewsControl(['scenario' => NewsControl::UPDATE]);
         $model->load($post);
         $model->files = UploadedFile::getInstances($model, 'files');
         if ($model->update()) {
@@ -157,7 +164,7 @@ class NewsController extends Controller
     //удаление новости
     public function actionDelete($id)
     {
-        $model = new ControlNews(['scenario' => ControlNews::DELETE]);
+        $model = new NewsControl(['scenario' => NewsControl::DELETE]);
         $model->id = $id;
         if ($model->delete()) {
             Yii::$app->session->setFlash('success', 'Новость успешно удалена');

@@ -4,9 +4,10 @@ use app\helpers\file\FileHelpers;
 use app\models\Entity\News;
 use app\models\Entity\Image;
 use yii\base\Model;
+use yii\web\ForbiddenHttpException;
 use yii\web\UploadedFile;
 
-class ControlNews extends Model
+class NewsControl extends Model
 {
     public $id;
     public $title;
@@ -60,13 +61,13 @@ class ControlNews extends Model
         if ($this->validate()) {
             $image_id = $this->SaveImage();
 
-            $record = new News();
-            $record->image_id = $image_id;
-            $record->title = $this->title;
-            $record->description = $this->description;
-            $record->body = $this->body;
-            $record->user_id = \Yii::$app->user->getId();
-            return $record->save();
+            $news = new News();
+            $news->image_id = $image_id;
+            $news->title = $this->title;
+            $news->description = $this->description;
+            $news->body = $this->body;
+            $news->user_id = \Yii::$app->user->getId();
+            return $news->save();
         }
         return false;
     }
@@ -75,15 +76,19 @@ class ControlNews extends Model
     public function update()
     {
         if ($this->validate()) {
-            $image_id = $this->SaveImage();
+            $news = News::findOne($this->id);
+            if (\Yii::$app->user->can('manageNews', ['news' => $news])) {
+                $image_id = $this->SaveImage();
 
-            $record = News::findOne($this->id);
-            if($image_id)$record->image_id = $image_id;
-            $record->title = $this->title;
-            $record->description = $this->description;
-            $record->body = $this->body;
-            $record->user_id = \Yii::$app->user->getId();
-            return $record->save();
+                if ($image_id) $news->image_id = $image_id;
+                $news->title = $this->title;
+                $news->description = $this->description;
+                $news->body = $this->body;
+                $news->user_id = \Yii::$app->user->getId();
+                return $news->save();
+            } else {
+                throw new ForbiddenHttpException;
+            }
         }
         return false;
     }
@@ -91,12 +96,16 @@ class ControlNews extends Model
     //удаление статьи со всеми зависимостями
     public function delete()
     {
-        if ($this->validate()) {
-            $record = News::findOne($this->id);
-            ControlImage::ImageDelete($record->image_id);
-            return $record->delete();
+        $news = News::findOne($this->id);
+        if (\Yii::$app->user->can('manageNews', ['news' => $news])) {
+            if ($this->validate()) {
+                ImageModel::ImageDelete($news->image_id);
+                return $news->delete();
+            }
+            return false;
+        } else {
+            throw new ForbiddenHttpException;
         }
-        return false;
     }
 
     //сохранение/обновление обложки поста
@@ -108,7 +117,7 @@ class ControlNews extends Model
                 //удаляем старое изображение
                 if($this->id){
                     $news = News::findOne($this->id);
-                    ControlImage::ImageDelete($news->image_id);
+                    ImageModel::ImageDelete($news->image_id);
                 }
                 //добавляем новое изображение
                 $app = \Yii::getAlias('@app');

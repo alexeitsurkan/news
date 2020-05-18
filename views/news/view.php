@@ -27,7 +27,7 @@ use yii\helpers\Url;
     <div class="container">
         <div class="row row-pb-md">
             <div class="col-md-12">
-                <article class="mt-negative">
+                <article class="mt-negative container">
                     <div class="text-left content-article">
                         <?=$data['body']?>
                     </div>

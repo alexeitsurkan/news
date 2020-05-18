@@ -3,11 +3,11 @@
 use app\assets\MyNewsBundle;
 use yii\helpers\Url;
 use yii\widgets\LinkPager;
+
 /**
  * @var $data
  * @var $pages
  */
-
 
 
 MyNewsBundle::register($this);
@@ -34,27 +34,41 @@ $post_size = ['full', 'one-third', 'one-third', 'one-third', 'two-third', 'one-t
     <div class="container">
         <div class="row row-pb-md">
             <div class="col-md-12">
+                <div class="row mb-4">
+                    <?php if (empty($data)): ?>
+                        <div class="col-xs-12">
+                            <h2> Пока ни одной статьи не найдено!</h2>
+                        </div>
+                    <?php endif; ?>
+                    <div class="col">
+                        <a href="<?= Url::toRoute(['news/form']) ?>" class="btn btn-success">Написать статью</a>
+                    </div>
+                    <div class="spacing"></div>
+                </div>
                 <ul id="gtco-post-list">
-
-                    <?php foreach($data as $key => $value):
+                    <?php foreach ($data as $key => $value):
                         $count_size = (int)count($post_size);
-                        $i = $key - $count_size*floor($key/$count_size);
-                    ?>
-                        <li class="<?=$post_size[$i] ?> entry animate-box" data-animate-effect="fadeIn">
+                        $i = $key - $count_size * floor($key / $count_size);
+                        ?>
+                        <li class="<?= $post_size[$i] ?> entry animate-box" data-animate-effect="fadeIn">
                             <div class="c_panel">
-                                <a href="<?= Url::toRoute(['news/form', 'id' => $value['id']]) ?>" class="btn btn-warning" title="Изменить"><i class="icon-pencil"></i></a>
-                                <a href="<?= Url::toRoute(['news/delete', 'id' => $value['id']]) ?>" class="btn btn-danger" title="Удалить"><i class="icon-trash"></i></a>
+                                <a href="<?= Url::toRoute(['news/form', 'id' => $value['id']]) ?>"
+                                   class="btn btn-warning" title="Изменить"><i class="icon-pencil"></i></a>
+                                <a href="<?= Url::toRoute(['news/delete', 'id' => $value['id']]) ?>"
+                                   class="btn btn-danger" title="Удалить"><i class="icon-trash"></i></a>
                             </div>
                             <a href="<?= Url::toRoute(['news/view', 'id' => $value['id']]) ?>">
-                                <div class="entry-img" style="background-image: url(<?= (!empty($value['image']))?$value['image']:''; ?>)"></div>
+                                <div class="entry-img"
+                                     style="background-image: url(<?=($value['image'])? $value['image'] : '/images/default.jpg'; ?>)"></div>
                                 <div class="entry-desc">
-                                    <h3><?=$value['title'] ?></h3>
-                                    <p><?=$value['description'] ?></p>
+                                    <h3><?= $value['title'] ?></h3>
+                                    <p><?= $value['description'] ?></p>
                                 </div>
                             </a>
-                            <span class="post-meta"><?=$value['user'] ?><span class="date-posted"><?=$value['date'] ?></span></span>
+                            <span class="post-meta"><?= $value['user'] ?><span
+                                        class="date-posted"><?= $value['date'] ?></span></span>
                         </li>
-                    <?php endforeach;?>
+                    <?php endforeach; ?>
                 </ul>
             </div>
         </div>

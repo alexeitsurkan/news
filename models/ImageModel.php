@@ -3,7 +3,7 @@
 use app\models\Entity\Image;
 use yii\base\Model;
 
-class ControlImage extends Model
+class ImageModel extends Model
 {
     public static function ImageDelete($image_id)
     {

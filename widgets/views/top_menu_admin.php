@@ -13,6 +13,9 @@ use yii\helpers\Url;
     </li>
     <li class="has-dropdown">
         <a href="<?=Url::toRoute(['user/index'])?>">Пользователи</a>
+        <ul class="dropdown">
+            <li><a href="<?=Url::toRoute(['user/send-notify'])?>">Отправить уведомление</a></li>
+        </ul>
     </li>
     <li class="has-dropdown">
         <a href="#"><?= Yii::$app->user->GetUserName() ?></a>

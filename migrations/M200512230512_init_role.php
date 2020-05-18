@@ -38,8 +38,5 @@ class M200512230512_init_role extends Migration
 
     public function safeDown()
     {
-        $this->truncateTable('auth_assignment');
-        $this->truncateTable('auth_item_child');
-        $this->truncateTable('auth_item');
     }
 }

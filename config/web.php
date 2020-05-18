@@ -5,6 +5,7 @@ $db = require __DIR__ . '/db.php';
 
 $config = [
     'id' => 'basic',
+    'name' => 'Telecom_Club.News',
     'basePath' => dirname(__DIR__),
     'language' => 'ru-RU',
     'bootstrap' => ['log'],
@@ -27,7 +28,7 @@ $config = [
             'loginUrl' => ['/user/login']
         ],
         'errorHandler' => [
-            'errorAction' => 'news/error',
+            'errorAction' => 'home/error',
         ],
         'authManager' => [
             'class' => \yii\rbac\DbManager::class,
@@ -41,8 +42,8 @@ $config = [
                 'encryption' => 'tls',
                 'host' => 'smtp.gmail.com',
                 'port' => '587',
-                'username' => '', //todo a.curkan сделать
-                'password' => '', //todo a.curkan сделать
+                'username' => 'yougdzcom@gmail.com', //todo a.curkan добавить
+                'password' => '', //todo a.curkan добавить
             ],
         ],
         'log' => [

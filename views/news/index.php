@@ -8,7 +8,7 @@ use yii\widgets\LinkPager;
  * @var $data
  * @var $pages
  */
-
+$this->title = 'Информационное агенство';
 $post_size = ['full', 'one-third', 'one-third', 'one-third', 'two-third', 'one-third'];
 ?>
 <?= Alert::widget() ?>
@@ -20,7 +20,7 @@ $post_size = ['full', 'one-third', 'one-third', 'one-third', 'two-third', 'one-t
             <div class="col-md-9 text-left">
                 <div class="display-t">
                     <div class="display-tc animate-box" data-animate-effect="fadeInUp">
-                        <span class="date-post">Информационное агенство</span>
+                        <span class="date-post"><?=$this->title?></span>
                         <h1 class="mb30"><a href="#">Новости</a></h1>
                     </div>
                 </div>
@@ -33,15 +33,17 @@ $post_size = ['full', 'one-third', 'one-third', 'one-third', 'two-third', 'one-t
     <div class="container">
         <div class="row row-pb-md">
             <div class="col-md-12">
+                <?php if(empty($data)):?>
+                    <h2>Ни одной статьи не было добавлено!</h2>
+                <?php endif;?>
                 <ul id="gtco-post-list">
-
                     <?php foreach($data as $key => $value):
                         $count_size = (int)count($post_size);
                         $i = $key - $count_size*floor($key/$count_size);
                     ?>
                         <li class="<?=$post_size[$i] ?> entry animate-box" data-animate-effect="fadeIn">
                             <a href="<?= Url::toRoute(['news/view', 'id' => $value['id']]) ?>">
-                                <div class="entry-img" style="background-image: url(<?= (!empty($value['image']))?$value['image']:''; ?>)"></div>
+                                <div class="entry-img" style="background-image: url(<?=($value['image'])? $value['image'] : '/images/default.jpg'; ?>)"></div>
                                 <div class="entry-desc">
                                     <h3><?=$value['title'] ?></h3>
                                     <p><?=$value['description'] ?></p>
