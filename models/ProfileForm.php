@@ -69,12 +69,9 @@ class ProfileForm extends Model
         $profile->notify_settings = $this->GetNotifySettings();
         $profile->update();
 
-        if($this->email || $this->pass){
-            $user = User::findIdentity($id);
-            if(!empty($this->email))$user->email = $this->email;
-            if(!empty($this->pass))$user->setPassword($this->pass);
-            $user->save();
-        }
+        $user = User::findIdentity($id);
+        if (!empty($this->email)) $user->updateEmail($this->email);
+        if (!empty($this->pass)) $user->updatePassword($this->pass);
 
         //сохраняем фотку
         foreach ($this->avatar as $file) {

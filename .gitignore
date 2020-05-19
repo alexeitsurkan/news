@@ -33,3 +33,4 @@ tests/_support/_generated
 /.vagrant
 /node_modules/
 /web/images/content/
+/package-lock.json

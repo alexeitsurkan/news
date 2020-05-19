@@ -2,6 +2,7 @@
 
 use app\models\Entity\TelegramNotifyData;
 use GuzzleHttp\Client;
+use Yii;
 
 /**
  * Class TelegramNotify
@@ -9,9 +10,6 @@ use GuzzleHttp\Client;
  */
 class TelegramNotify implements NotifyInterface
 {
-    const TOKEN = '1166705173:AAG9do6bC_L0yqFqcXSokQQWgqd70KVU2mk';
-    const URL = 'https://api.telegram.org/bot';
-
     private $user_id;
 
     public function __construct($user_id)
@@ -29,7 +27,7 @@ class TelegramNotify implements NotifyInterface
     public function sendNotify($title, $message, $click_action)
     {
         $client = new Client();
-        $response = $client->get(self::URL . self::TOKEN . '/sendMessage', [
+        $response = $client->get(Yii::$app->params['telegram_url'] . Yii::$app->params['telegram_token'] . '/sendMessage', [
             'query' => [
                 'text' => '<h1>' . $title . '<h1>' . $message,
                 'chat_id' => $this->getChatId(),

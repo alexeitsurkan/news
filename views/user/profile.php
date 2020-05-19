@@ -11,6 +11,7 @@ UserProfileBundle::register($this);
  * @var $model
  * @var $dicNotifySender
  * @var $dicNotifyEvent
+ * @var $href_telegram
  */
 
 
@@ -82,16 +83,17 @@ $this->title = 'Профиль пользователя';
                     <div class="row">
                         <div class="col-sm-6">
                             <div class="form-group">
-                                <label class="col-xs-12 control-label no-padding-right">Выберите способ отправки уведомлений</label>
+                                <label class="col-xs-12 control-label no-padding-right">Выберите способ получения уведомлений</label>
                                 <?= Html::activeCheckboxList($model, 'notify_sender', $dicNotifySender, [
                                     'class' => 'offset-1 text-left',
                                     'separator' => '<br>',
                                 ]) ?>
+                                <a href="<?=$href_telegram?>" class="btn btn-primary" target="_blank">Активировать чат Telegram</a>
                             </div>
                         </div>
                         <div class="col-sm-6">
                             <div class="form-group">
-                                <label class="col-xs-12 control-label no-padding-right">После каких событий отправлять уведомления?</label>
+                                <label class="col-xs-12 control-label no-padding-right">После каких событий получать уведомления?</label>
                                 <?= Html::activeCheckboxList($model, 'notify_event', $dicNotifyEvent, [
                                     'class' => 'offset-1 text-left',
                                     'separator' => '<br>',

@@ -21,10 +21,11 @@ class RecoveryUser extends Model
             ['email', 'validEmail'],
         ];
     }
+
     public function validEmail($attribute, $params)
     {
         $user = User::findByEmail($this->$attribute);
-        if(empty($user)){
+        if (empty($user)) {
             $this->addError($attribute, 'Такой E-mail адрес не зарегистрирован в системе');
         }
 
@@ -38,14 +39,14 @@ class RecoveryUser extends Model
     {
         $result = false;
         $transaction = \Yii::$app->getDb()->beginTransaction();
-        try{
+        try {
             $user = User::findByEmail($this->email);
             $pass = Yii::$app->security->generateRandomString(8);
-            $user->setPassword($pass);
-            $user->save();
+            $user->updatePassword($pass);
+
 
             $this->sendEmail($pass);
-        }catch (\Exception $e){
+        } catch (\Exception $e) {
             $transaction->rollBack();
             return false;
         }
@@ -60,7 +61,7 @@ class RecoveryUser extends Model
             ->setFrom([Yii::$app->params['supportEmail'] => Yii::$app->name])
             ->setTo($this->email)
             ->setSubject('Восстановление пароля' . Yii::$app->name)
-            ->setHtmlBody("Новый пароль: <b>".$pass."</b>")
+            ->setHtmlBody("Новый пароль: <b>" . $pass . "</b>")
             ->send();
     }
 }

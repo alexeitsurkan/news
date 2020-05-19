@@ -3,8 +3,10 @@
 use app\rbac\AdminRule;
 use app\rbac\CreatorRule;
 use app\rbac\ModeratorRule;
+use GuzzleHttp\Client;
 use Yii;
 use yii\console\Controller;
+use yii\helpers\Url;
 
 class DefaultController extends Controller
 {
@@ -56,5 +58,13 @@ class DefaultController extends Controller
         $author = Yii::$app->authManager->getRole('admin');
         $auth->addChild($author, $confirmUser);
         //-------------------------------------------------------------
+        //указываем метод для получения входящих обновлений телеграм (например получение telegram chat_id)
+        $client = new Client();
+        $response = $client->get(Yii::$app->params['telegram_url'] . Yii::$app->params['telegram_token'] . '/setWebhook', [
+            'query' => [
+                'URL' => Yii::$app->params['homeUrl'].'telegram/get-updates',
+                'allowed_updates' => json_encode(['chat'])
+            ]
+        ]);
     }
 }

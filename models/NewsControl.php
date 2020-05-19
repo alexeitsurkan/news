@@ -3,6 +3,8 @@
 use app\helpers\file\FileHelpers;
 use app\models\Entity\News;
 use app\models\Entity\Image;
+use app\models\Events\UserNotifyEvents;
+use Yii;
 use yii\base\Model;
 use yii\web\ForbiddenHttpException;
 use yii\web\UploadedFile;
@@ -19,6 +21,14 @@ class NewsControl extends Model
     const CREATE = 'create';
     const UPDATE = 'update';
     const DELETE = 'delete';
+
+    const EVENT_ADD_NEWS = 'add_news';
+
+    public function init()
+    {
+        $this->on(self::EVENT_ADD_NEWS,[Yii::$app->notifier,'sendNotify']);
+        parent::init();
+    }
 
     public function scenarios()
     {
@@ -67,7 +77,13 @@ class NewsControl extends Model
             $news->description = $this->description;
             $news->body = $this->body;
             $news->user_id = \Yii::$app->user->getId();
-            return $news->save();
+            if($news->save()){
+                $event = new UserNotifyEvents();
+                $event->title = $this->title;
+                $event->body = $this->description;
+                $this->trigger(self::EVENT_ADD_NEWS,$event);
+                return true;
+            }
         }
         return false;
     }
@@ -130,6 +146,5 @@ class NewsControl extends Model
                 return $image->id;
             }
         }
-
     }
 }

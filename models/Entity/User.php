@@ -1,5 +1,7 @@
 <?php namespace app\models\Entity;
 
+use app\models\Events\UserNotifyEvents;
+use app\models\Events\UserUpdateEvent;
 use Yii;
 use yii\db\ActiveRecord;
 use yii\web\IdentityInterface;
@@ -20,6 +22,16 @@ class User extends ActiveRecord implements IdentityInterface
     const STATUS_DELETED = 0;
     const STATUS_INACTIVE = 9;
     const STATUS_ACTIVE = 10;
+
+    const EVENT_PASSWORD_UPDATE = 'password_update';
+    const EVENT_EMAIL_UPDATE = 'email_update';
+
+    public function init()
+    {
+        $this->on(self::EVENT_PASSWORD_UPDATE,[Yii::$app->notifier,'sendNotify']);
+        $this->on(self::EVENT_EMAIL_UPDATE,[Yii::$app->notifier,'sendNotify']);
+        parent::init();
+    }
 
     public static function tableName()
     {
@@ -152,5 +164,35 @@ class User extends ActiveRecord implements IdentityInterface
             'status' => self::STATUS_INACTIVE
         ]);
     }
+
+    public function updateEmail($email)
+    {
+        $this->email = $email;
+        if($this->save()){
+            $event = new UserNotifyEvents();
+            $event->user_id = $this->id;
+            $event->title = 'Обновление E-mail адреса на сайте:'.Yii::$app->name;
+            $event->body = 'Ваш E-mail был изменен на '.$this->email;
+            $this->trigger(self::EVENT_EMAIL_UPDATE,$event);
+        }
+    }
+
+    public function updatePassword($password)
+    {
+        $this->setPassword($password);
+        if($this->save()){
+            $event = new UserNotifyEvents();
+            $event->user_id = $this->id;
+            $event->title = 'Обновление пароля на сайте:'.Yii::$app->name;
+            $event->body = 'Ваш пароль был изменен';
+            $this->trigger(self::EVENT_PASSWORD_UPDATE,$event);
+        }
+    }
+
+    public static function all()
+    {
+        return self::find()->all();
+    }
+
 }
 

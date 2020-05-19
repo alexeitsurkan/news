@@ -32,18 +32,9 @@ class SendNotifyForm extends Model
         try{
             if ($this->validate()) {
                 foreach ($this->users as $user_id){
-                    $profile = Profile::get($user_id);
-                    $notify_settings = $profile->notify_settings;
-                    foreach ($notify_settings['notify_sender'] as $sender_id){
-                        $el_sender = DicNotifySender::get($sender_id);
-                        if($el_sender){
-                            /** @var Notifier $Notifier */
-                            $class = $el_sender->class;
-                            $Notifier = new $class($user_id);
-                            $Notifier->send($this->title,$this->body,$this->click_action);
-                        }
-                    }
+                    \Yii::$app->notifier->sendNotifyForOne($user_id, $this->title, $this->body, $this->click_action);
                 }
+                return true;
             }
         }catch (\Exception $e){
             return false;

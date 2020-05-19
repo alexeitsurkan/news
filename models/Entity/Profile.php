@@ -39,7 +39,7 @@ class Profile extends ActiveRecord
     {
         return [
             'notify_sender'=>[DicNotifySender::EMAIL],
-            'notify_event'=>[DicNotifyEvent::EVENT_PASW],
+            'notify_event'=>[DicNotifyEvent::EVENT_PASSW],
         ];
     }
 }

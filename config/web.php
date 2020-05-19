@@ -27,6 +27,9 @@ $config = [
             'enableAutoLogin' => false,
             'loginUrl' => ['/user/login']
         ],
+        'notifier' =>[
+            'class' => app\components\Notifier::class,
+        ],
         'errorHandler' => [
             'errorAction' => 'home/error',
         ],

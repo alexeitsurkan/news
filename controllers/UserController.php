@@ -148,7 +148,7 @@ class UserController extends Controller
         if($profile['notify_settings']){
             $notify_settings       = json_decode($profile['notify_settings'],true);
             $model->notify_sender = $notify_settings['notify_sender'];
-            $model->notify_event   = $notify_settings['notify_event'];
+            $model->notify_event  = $notify_settings['notify_event'];
         }else{
             $model->notify_sender = [];
             $model->notify_event   = [];
@@ -159,10 +159,16 @@ class UserController extends Controller
         //справочник нотификаторов
         $dicNotifySender = DicNotifySender::getDic();
 
+        //ссылка на чат telegram
+        $key = 'user_'.$id;//$id - user_id
+        Yii::$app->cache->set($key, $id,'3600');
+        $href_telegram = 'https://t.me/Telecom_club_news_bot?start='.$key;
+
         return $this->render('profile', [
             'model'            => $model,
             'dicNotifyEvent'   => $dicNotifyEvent,
             'dicNotifySender'  => $dicNotifySender,
+            'href_telegram'    => $href_telegram,
         ]);
     }
 
@@ -212,7 +218,10 @@ class UserController extends Controller
         $post = Yii::$app->request->post();
         if(!empty($post)){
             $model->load($post);
-            $model->SendNotify();
+            if($model->SendNotify()){
+                Yii::$app->session->setFlash('success', 'Уведомления отправлены');
+            }
+            $this->redirect(Url::toRoute(['user/index']));
         }
         $dic_user = SendNotifyForm::DicUser();
         return $this->render('send_notify', [

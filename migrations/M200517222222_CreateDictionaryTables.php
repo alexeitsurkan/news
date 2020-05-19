@@ -23,24 +23,26 @@ class M200517222222_CreateDictionaryTables extends Migration
         $this->insert('{{%dic_notify_sender}}',[
             'id'       => 1,
             'name'     => 'E-mail',
-            'class'    => 'EmailNotifier',
+            'class'    => 'app\helpers\notify\EmailNotifier',
         ]);
         $this->insert('{{%dic_notify_sender}}',[
             'id'       => 2,
             'name'     => 'Telegram',
-            'class'    => 'TelegramNotifier',
+            'class'    => 'app\helpers\notify\TelegramNotifier',
         ]);
         //---------------------------------------------------------------------------------------------
 
         $this->createTable('{{%dic_notify_event}}', [
-            'id'   => $this->primaryKey(),
-            'name' => $this->string()->notNull()->comment('название события'),
+            'id'    => $this->primaryKey(),
+            'name'  => $this->string()->notNull()->comment('название события'),
+            'event' => $this->string()->notNull()->comment('события'),
         ], $tableOptions);
 
         $this->addCommentOnTable('{{%dic_notify_event}}', 'список событий уведомлений пользователей');
 
-        $this->insert('{{%dic_notify_event}}',['id' => 1, 'name' => 'при изменении пароля']);
-        $this->insert('{{%dic_notify_event}}',['id' => 2, 'name' => 'при добавлении новости']);
+        $this->insert('{{%dic_notify_event}}',['id' => 1, 'name' => 'при изменении E-mail адреса','event' => 'email_update']);
+        $this->insert('{{%dic_notify_event}}',['id' => 2, 'name' => 'при изменении пароля','event' => 'password_update']);
+        $this->insert('{{%dic_notify_event}}',['id' => 3, 'name' => 'при добавлении новости','event' => 'add_news']);
     }
 
     /**

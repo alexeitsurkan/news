@@ -34,6 +34,7 @@ AppAsset::register($this);
     <meta name="twitter:card" content=""/>
 
     <link href="https://fonts.googleapis.com/css?family=Crimson+Text:400,400i|Roboto+Mono" rel="stylesheet">
+    <link rel="shortcut icon" href="/images/favicon.png" type="image/x-icon">
     <?php $this->head() ?>
 </head>
 <body>
