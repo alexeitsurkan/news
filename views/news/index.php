@@ -13,7 +13,7 @@ $post_size = ['full', 'one-third', 'one-third', 'one-third', 'two-third', 'one-t
 ?>
 <?= Alert::widget() ?>
 
-<header id="gtco-header" class="gtco-cover gtco-cover-sm" role="banner" style="background-image:url(images/content/zz.jpeg);">
+<header id="gtco-header" class="gtco-cover gtco-cover-sm" role="banner" style="background-image:url(images/content/pag.jpg);">
     <div class="overlay"></div>
     <div class="container">
         <div class="row">
@@ -21,7 +21,7 @@ $post_size = ['full', 'one-third', 'one-third', 'one-third', 'two-third', 'one-t
                 <div class="display-t">
                     <div class="display-tc animate-box" data-animate-effect="fadeInUp">
                         <span class="date-post"><?=$this->title?></span>
-                        <h1 class="mb30"><a href="#">Новости</a></h1>
+                        <h1 class="mb30"><a href="#">Сергей Собянин — о ситуации с коронавирусом в Москве</a></h1>
                     </div>
                 </div>
             </div>

@@ -6,7 +6,6 @@ use app\rbac\ModeratorRule;
 use GuzzleHttp\Client;
 use Yii;
 use yii\console\Controller;
-use yii\helpers\Url;
 
 class DefaultController extends Controller
 {
@@ -63,7 +62,6 @@ class DefaultController extends Controller
         $response = $client->get(Yii::$app->params['telegram_url'] . Yii::$app->params['telegram_token'] . '/setWebhook', [
             'query' => [
                 'URL' => Yii::$app->params['homeUrl'].'telegram/get-updates',
-                'allowed_updates' => json_encode(['chat'])
             ]
         ]);
     }

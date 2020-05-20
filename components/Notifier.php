@@ -38,7 +38,7 @@ class Notifier extends Component
     public function sendNotifyForOne($user_id, $title, $body, $click_action,$event_name = null)
     {
         $profile = Profile::get($user_id);
-        $notify_settings = \GuzzleHttp\json_decode($profile->notify_settings,true);
+        $notify_settings = json_decode($profile->notify_settings,true);
         foreach ($notify_settings['notify_sender'] as $sender_id){
             $el_sender = DicNotifySender::get($sender_id);
             if($el_sender){
